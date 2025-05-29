@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvoAcademy - Quality Learning for Every Child</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50; /* Dark Blue-Gray */
+            --secondary-color: #3498db; /* Bright Blue */
+            --success-color: #27ae60; /* Green */
+            --warning-color: #f39c12; /* Orange */
+            --danger-color: #e74c3c; /* Red */
+            --light-bg: #ecf0f1; /* Light Gray */
+            --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --hover-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* User's original hover shadow */
+            --hover-shadow-strong: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12); /* Enhanced hover shadow */
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --accent-purple: #8e44ad; /* A purple shade for Enroll button */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        .bg-primary { background-color: var(--primary-color); }
+        .text-primary { color: var(--primary-color); }
+        .bg-secondary { background-color: var(--secondary-color); }
+        .text-secondary { color: var(--secondary-color); }
+        .bg-accent-purple { background-color: var(--accent-purple); }
+        .border-secondary { border-color: var(--secondary-color); }
+
+        .hero-bg {
+            background-image: url('https://media.istockphoto.com/id/872254010/photo/college-university-campus-out-of-focus-background.jpg?s=612x612&w=0&k=20&c=ZPOOfK_8uZ4IFlOgnGw3dOJwLiYUJCDqRP5mjY1LZYk=');
+            background-size: cover;
+            background-position: center;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: var(--card-shadow);
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* To ensure smooth transition of details */
+        }
+        .card:hover {
+            box-shadow: var(--hover-shadow-strong);
+            transform: translateY(-5px) scale(1.02);
+        }
+        .card-content {
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+        }
+        .course-details-more {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.4s ease-in-out, max-height 0.5s ease-in-out;
+        }
+        .card:hover .course-details-more {
+            opacity: 1;
+            max-height: 200px; /* Adjust as needed for content */
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            display: block; /* For <a> tags to behave like buttons */
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .btn-accent {
+            background-color: var(--accent-purple);
+            color: var(--text-light);
+        }
+        .btn-accent:hover {
+            background-color: #732d91;
+            transform: translateY(-2px);
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color); 
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        .hamburger.open .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+        .hamburger.open .line2 { opacity: 0; }
+        .hamburger.open .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--light-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--secondary-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2980b9; }
+
+        /* Navbar underline hover effect */
+        nav .hidden.md\:flex a:not(.btn) { /* Target navbar links, exclude buttons */
+            position: relative;
+            padding-bottom: 0.25rem; /* Space for underline */
+        }
+        nav .hidden.md\:flex a:not(.btn)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px; /* Underline thickness */
+            background-color: var(--secondary-color); /* Blue color */
+            transition: width 0.3s ease-in-out;
+        }
+        nav .hidden.md\:flex a:not(.btn):hover::after {
+            width: 100%;
+        }
+        nav .hidden.md\:flex a:not(.btn):hover {
+             color: var(--secondary-color); /* Keep text color change on hover */
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-primary text-sm text-white py-2 px-4 md:px-8">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-1 md:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                <span>Main Campus: DHA Phase II, Karachi</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 inline" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
+                    <span>+92 300 1234567</span>
+                </div>
+                <div class="flex space-x-2">
+                    <a href="#" class="hover:opacity-75"> <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="h-5 w-5 inline"> </a> 
+                    <a href="#" class="hover:opacity-75"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/2048px-Instagram_logo_2022.svg.png" alt="Instagram" class="h-5 w-5 inline"> </a> 
+                    <a href="#" class="hover:opacity-75"> <img src="https://www.svgrepo.com/show/157006/linkedin.svg" alt="LinkedIn" class="h-5 w-5 inline"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex justify-between items-center py-4">
+                <a href="#" class="text-2xl font-bold text-primary">EvoAcademy</a>
+                <div class="hidden md:flex space-x-6 items-center font-bold">
+                    <a href="#home" class="text-gray-700">Home</a>
+                    <a href="#about" class="text-gray-700">About</a>
+                    <a href="#campuses" class="text-gray-700">Campuses</a>
+                    <a href="#facilities" class="text-gray-700">Facilities</a>
+                    <a href="#classes" class="text-gray-700">Classes</a>
+                    <a href="#contact" class="text-gray-700">Contact</a>
+                    <a href="#" class="btn btn-accent text-sm">Enroll Now</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobileMenuButton" class="hamburger focus:outline-none">
+                        <div class="line1"></div> <div class="line2"></div> <div class="line3"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg font-bold">
+            <a href="#home" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">Home</a>
+            <a href="#about" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">About</a>
+            <a href="#campuses" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">Campuses</a>
+            <a href="#facilities" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">Facilities</a>
+            <a href="#classes" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">Classes</a>
+            <a href="#contact" class="block py-3 px-4 text-gray-700 hover:bg-gray-100 hover:text-secondary">Contact</a>
+            <a href="#" class="block py-3 px-4 btn btn-accent text-sm text-center mx-4 my-2">Enroll Now</a>
+        </div>
+    </nav>
+
+    <section id="home" class="text-white min-h-[calc(100vh-120px)] md:min-h-[calc(100vh-88px)] flex items-center justify-center relative overflow-hidden">
+        <div id="heroSlideshow" class="absolute inset-0 w-full h-full z-0">
+            <div class="hero-slide absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0" style="background-image: url('https://theeducationtrailblazer.com/wp-content/uploads/2024/12/Besyt-school-in-lahore.jpg');"></div>
+            <div class="hero-slide absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0" style="background-image: url('https://www.euroschoolindia.com/blogs/wp-content/uploads/2023/10/nursery-admission-faqs-jpg.webp');"></div>
+            <div class="hero-slide absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0" style="background-image: url('https://pbcchicago.com/wp-content/uploads/2018/04/2019-09-25-public-building-commission-of-chicago-Englewood-STEM-High-School_PP11546.jpg');"></div>
+        </div>
+        <div class="absolute inset-0 bg-black opacity-40 z-10"></div>
+        <div class="container mx-auto text-center relative z-20 p-6">
+            <div class="bg-white bg-opacity-80 backdrop-blur-sm p-8 md:p-12 rounded-2xl inline-block max-w-xl shadow-xl">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-primary">Quality Learning for Every Child</h1>
+                <p class="text-lg md:text-xl mb-8 text-gray-700">Join EvoAcademy to unlock your child's potential with our innovative and supportive learning environment.</p>
+                <a href="#classes" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-lg">Explore Classes</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-primary">About EvoAcademy</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Discover our mission, vision, and the dedicated team behind EvoAcademy's success.</p>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div><img src="https://png.pngtree.com/png-clipart/20220531/original/pngtree-hand-holding-megaphone-with-success-stories-png-image_7807867.png" alt="About EvoAcademy" class="rounded-lg shadow-lg w-full"></div>
+                <div class="text-gray-700 space-y-4">
+                    <h3 class="text-2xl font-semibold text-secondary">Our Mission</h3>
+                    <p>To provide an inclusive and stimulating educational experience that fosters critical thinking, creativity, and a lifelong love for learning in every student.</p>
+                    <h3 class="text-2xl font-semibold text-secondary mt-4">Our Vision</h3>
+                    <p>To be a leading educational institution recognized for academic excellence, innovation in teaching, and holistic development of students, preparing them to be responsible global citizens.</p>
+                    <p>At EvoAcademy, we believe in nurturing individual talents and providing a supportive community where students can thrive academically, socially, and emotionally.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="our-campuses" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-primary">Our Campuses</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">EvoAcademy proudly offers specialized learning environments across three conveniently located campuses in DHA, Karachi.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card text-center">
+                    <img src="https://ideogram.ai/assets/image/lossless/response/CeLB4TaoREqq4jT5NftVKw" alt="Early Years Campus - DHA Phase IV" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary">DHA Phase IV Campus</h3>
+                            <p class="text-gray-700 font-medium mb-2">For Early Year Students</p>
+                            <p class="text-gray-600 text-sm">A vibrant and secure space designed to spark curiosity and foster foundational learning through play and exploration for our youngest scholars.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <img src="https://ideogram.ai/assets/progressive-image/balanced/response/ia2q0sZbQka85RBtMy9HKg" alt="Primary Campus - DHA Phase I" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary">DHA Phase I Campus</h3>
+                            <p class="text-gray-700 font-medium mb-2">For Primary Students</p>
+                            <p class="text-gray-600 text-sm">Our Phase I campus offers a stimulating environment where primary students develop core academic skills and a love for learning in a supportive setting.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card text-center">
+                    <img src="https://ideogram.ai/assets/image/lossless/response/SOVF51cBQ1OK_xOxOOLSZw" alt="Secondary Campus - DHA Phase II" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary">DHA Phase II Campus</h3>
+                            <p class="text-gray-700 font-medium mb-2">For Secondary Students</p>
+                            <p class="text-gray-600 text-sm">This campus is dedicated to our secondary students, providing advanced learning resources and a challenging curriculum to prepare them for future success.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="facilities" class="py-16 md:py-24 bg-white"> <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-primary">Our Facilities</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">Explore our state-of-the-art facilities designed to enhance the learning experience across all our campuses.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-6 text-center">
+                    <img src="https://i0.wp.com/ebookfriendly.com/wp-content/uploads/2013/04/Exhibition-Pavilion-and-Library-Guiyang-inside.jpg?resize=840%2C561&ssl=1" alt="Library" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold mb-2 text-secondary">Modern Libraries</h3>
+                    <p class="text-gray-600">Access to a vast collection of books, digital resources, and quiet study areas in each campus.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/039/302/250/small/ai-generated-back-to-school-science-lab-excitement-highlight-the-excitement-of-a-science-experiment-in-a-laboratory-setting-background-image-generative-ai-photo.jpg" alt="Science Lab" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold mb-2 text-secondary">Advanced Science Labs</h3>
+                    <p class="text-gray-600">Fully equipped labs for practical learning in physics, chemistry, and biology, tailored to age group.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <img src="https://wpassets.graana.com/blog/wp-content/uploads/2023/11/Women-Sports-Complex-.jpeg" alt="Sports Area" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold mb-2 text-secondary">Comprehensive Sports Areas</h3>
+                    <p class="text-gray-600">Spacious grounds and courts for various sports and physical activities, promoting a healthy lifestyle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="classes" class="py-16 md:py-24 bg-gray-50"> <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-primary">Our Classes</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">We offer a diverse range of programs tailored to different age groups and learning needs.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card">
+                    <img src="https://www.cem.org/hubfs/blog/Blog-early-years-education-is-key.jpg" alt="Early Years Program" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary class-title">Early Years Program</h3>
+                            <p class="text-gray-600 mb-2 text-md class-description-short">A nurturing start for our youngest learners, focusing on play-based education and foundational skills.</p>
+                             <div class="course-details-more">
+                                <p class="text-sm text-gray-500 mt-1">Key areas: Social interaction, motor skills, early literacy & numeracy. Duration: Full academic year. Ages: 3-5.</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-3"> 
+                            <a href="#contact" class="btn btn-primary w-full text-sm">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://static.cdntap.com/tap-assets-prod/wp-content/uploads/sites/12/2010/07/shutterstock_116494558.jpg?width=700&quality=95" alt="Primary School" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary class-title">Primary School</h3>
+                            <p class="text-gray-600 mb-2 text-md class-description-short">Building strong foundations in core subjects with engaging and interactive teaching methods.</p>
+                            <div class="course-details-more">
+                                <p class="text-sm text-gray-500 mt-1">Subjects: Maths, Science, English, Arts. Focus on critical thinking. Duration: Grades 1-5. Ages: 6-10.</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-3">
+                             <a href="#contact" class="btn btn-primary w-full text-sm">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://c.files.bbci.co.uk/175E3/production/_105851759_secschool2.jpg" alt="Secondary School" class="w-full h-56 object-cover rounded-t-lg">
+                    <div class="p-6 card-content">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2 text-secondary class-title">Secondary School</h3>
+                            <p class="text-gray-600 mb-2 text-md class-description-short">Preparing students for higher education and future careers with a comprehensive curriculum.</p>
+                             <div class="course-details-more">
+                                <p class="text-sm text-gray-500 mt-1">Advanced subjects, career guidance, extracurriculars. Duration: Grades 6-10. Ages: 11-16.</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-3">
+                             <a href="#contact" class="btn btn-primary w-full text-sm">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 md:py-24 bg-white"> <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-primary">Contact Us</h2>
+            <p class="text-center text-gray-500 mb-12 max-w-2xl mx-auto">We'd love to hear from you! Reach out for admissions, inquiries, or any other information.</p>
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg border border-gray-200"> <form id="contactForm"> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" name="name" id="name" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-secondary focus:border-secondary">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" name="email" id="email" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-secondary focus:border-secondary">
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                        <input type="text" name="subject" id="subject" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-secondary focus:border-secondary">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <textarea name="message" id="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-secondary focus:border-secondary"></textarea>
+                    </div>
+                     <div class="mb-4">
+                        <button type="submit" class="w-full btn btn-primary">Send Message</button>
+                    </div>
+                    <div id="formStatus" class="text-center"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4 md:px-8 text-center">
+            <p>&copy; <span id="currentYear"></span> EvoAcademy. All Rights Reserved.</p>
+            <p class="text-sm mt-1">Designed with <span class="text-red-400">&hearts;</span> using Tailwind CSS</p>
+        </div>
+    </footer>
+
+     <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.classList.toggle('open');
+            });
+        }
+        
+        const mobileNavLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileMenu && mobileMenuButton) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuButton.classList.remove('open');
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.length > 1 && targetId.startsWith('#')) { 
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault(); 
+                        const navbar = document.querySelector('nav');
+                        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+            
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                }
+            });
+        });
+
+        // Set current year in footer
+        const currentYearElement = document.getElementById('currentYear');
+        if (currentYearElement) {
+            currentYearElement.textContent = new Date().getFullYear();
+        }
+        
+        // Contact Form Submission (Basic - no actual sending)
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        if (contactForm && formStatus) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = contactForm.name.value.trim();
+                const email = contactForm.email.value.trim();
+                const subject = contactForm.subject.value.trim();
+                const message = contactForm.message.value.trim();
+
+                if (!name || !email || !subject || !message) {
+                    formStatus.innerHTML = '<p class="text-danger-color">Please fill out all fields.</p>';
+                     setTimeout(() => {
+                        formStatus.innerHTML = '';
+                    }, 3000);
+                    return;
+                }
+                
+                formStatus.innerHTML = '<p class="text-green-600">Thank you for your message! We will get back to you soon.</p>';
+                contactForm.reset();
+                setTimeout(() => {
+                    formStatus.innerHTML = '';
+                }, 5000);
+            });
+        }
+
+        // Hero Slideshow Logic
+        const heroSlides = document.querySelectorAll('#heroSlideshow .hero-slide');
+        let currentHeroSlide = 0;
+        const slideInterval = 5000; // 5 seconds
+
+        function showHeroSlide(index) {
+            heroSlides.forEach((slide) => {
+                slide.classList.remove('opacity-100');
+                // Ensure opacity-0 is added if not present, for consistent behavior
+                if (!slide.classList.contains('opacity-0')) {
+                    slide.classList.add('opacity-0');
+                }
+            });
+            if (heroSlides[index]) {
+                heroSlides[index].classList.remove('opacity-0');
+                heroSlides[index].classList.add('opacity-100');
+            }
+        }
+
+        function nextHeroSlide() {
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            showHeroSlide(currentHeroSlide);
+        }
+
+        if (heroSlides.length > 0) {
+            showHeroSlide(currentHeroSlide); // Show the first slide initially
+            setInterval(nextHeroSlide, slideInterval);
+        }
+
+    </script>
+</body>
+</html>
